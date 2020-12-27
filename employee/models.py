@@ -1,5 +1,4 @@
 from django.db import models
-from enum import Enum
 
 class Employee (models.Model):
     full_name = models.CharField(max_length=150)
@@ -23,6 +22,7 @@ class Employee (models.Model):
     id_type = models.CharField(choices=IdTypeChoices , max_length=10)
     id_number = models.CharField(max_length=14)
     hire_date = models.DateField()
+    leave_balance = models.IntegerField(default=21)
     
     SocialStatusChoices=[
         ('SINGLE' , 'Single'),
