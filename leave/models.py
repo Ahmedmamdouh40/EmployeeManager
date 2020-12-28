@@ -14,3 +14,7 @@ class EmployeeLeave(models.Model):
     end_date = models.DateField()
     resume_date = models.DateField()
     leave_type = models.ForeignKey(LeaveMaster , on_delete=models.CASCADE)
+
+
+    def __str__(self):
+        return self.emp_name.full_name
