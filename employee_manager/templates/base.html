@@ -5,6 +5,7 @@
     <div id="layoutSidenav">
         {% include "sidebar.html" %}
         <div id="layoutSidenav_content">
-            {% include "employee_leaves_list.html" %}
-
-        {% include "footer.html" %}
+            
+            {% block content %}
+            {% endblock content %}
+{% include "footer.html" %}
