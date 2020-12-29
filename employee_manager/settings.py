@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'employee',
     'leave',
     'home',
+    'crispy_forms',
 ]
 
 MIDDLEWARE = [
@@ -128,3 +129,5 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "employee_manager/static"),
     os.path.join(BASE_DIR, "static"),
 ]
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
