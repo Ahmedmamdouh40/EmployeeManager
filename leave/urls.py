@@ -15,11 +15,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path , include
-from home import views
+from leave import views
+
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', views.view_leaves),
-    path('employees/',include('employee.urls')),
-    path('leaves/',include('leave.urls')),
+     path('' , views.leave_masters_list),
+     path('add_leave_master', views.create_leave_master),
+     path('edit_leave_master/<leave_master_id>' , views.edit_leave_master),
+     path('delete_leave_master/<leave_master_id>',views.delete_leave_master),
+
+
 ]
