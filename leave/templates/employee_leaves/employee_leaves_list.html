@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="card mb-4">
+    <div class="card-header"><i class="fas fa-table mr-1"></i>Employee Leaves</div>
+    <div class="card-body">
+        <form action="employee_leaves/add_employee_leave" class="inline">
+            <button class="float-right btn-primary btn-lg">Add Leave</button>
+        </form>
+        <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Employee Name</th>
+                        <th>Leave Start Date</th>
+                        <th>Leave End Date</th>
+                        <th>Leave Resume Date</th>
+                        <th>Leave Type</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for employee_leave in employee_leaves %}
+                    <tr>
+                        <td>{{employee_leave.emp_name.full_name}}</td>
+                        <td>{{employee_leave.start_date}}</td>
+                        <td>{{employee_leave.end_date}}</td>
+                        <td>{{employee_leave.resume_date}}</td>
+                        <td>{{employee_leave.leave_type}}</td>
+                        <td class="d-flex justify-content-around">
+                            <form action="employee_leaves/edit_employee_leave/{{employee_leave.id}}" class="inline">
+                                <button class="btn float-left btn-primary ">Update</button>
+                            </form>
+                            <form action="employee_leaves/delete_employee_leave/{{employee_leave.id}}" class="inline">
+                                <button class=" btn float-right btn-danger ">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock content %}

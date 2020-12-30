@@ -24,5 +24,11 @@ urlpatterns = [
      path('edit_leave_master/<leave_master_id>' , views.edit_leave_master),
      path('delete_leave_master/<leave_master_id>',views.delete_leave_master),
 
+     path('employee_leaves' , views.employee_leaves_list),
+     path('employee_leaves/add_employee_leave', views.create_employee_leave),
+     path('employee_leaves/edit_employee_leave/<employee_leave_id>' , views.edit_employee_leave),
+     path('employee_leaves/delete_employee_leave/<employee_leave_id>',views.delete_employee_leave),
+
+
 
 ]

@@ -35,3 +35,38 @@ def delete_leave_master(request , leave_master_id):
     leave_master = LeaveMaster.objects.get(id = leave_master_id)
     leave_master.delete()
     return HttpResponseRedirect('/leaves')
+
+
+######### EmployeeLeave CRUD #########
+
+def employee_leaves_list(request):
+    all_employee_leaves = EmployeeLeave.objects.all()
+    context = {'employee_leaves' : all_employee_leaves}
+    return render(request , 'employee_leaves/employee_leaves_list.html' , context)
+
+
+def create_employee_leave(request):
+    form = EmployeeLeaveForm
+    if request.method == "POST":
+        form = EmployeeLeaveForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect('/leaves/employee_leaves')
+    return render(request , 'employee_leaves/add_employee_leave.html' , {'form':form})
+
+
+def edit_employee_leave(request , employee_leave_id):
+    employee_leave = get_object_or_404(EmployeeLeave , id=employee_leave_id)
+    if request.method == "POST":
+        form = EmployeeLeave(request.POST , instance=employee_leave)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect('/leaves/employee_leaves')
+    else:
+        form = EmployeeLeaveForm(instance=employee_leave )
+    return render(request , 'employee_leaves/edit_employee_leave.html' , {'form':form})
+
+def delete_employee_leave(request , employee_leave_id):
+    employee_leave = EmployeeLeave.objects.get(id = employee_leave_id)
+    employee_leave.delete()
+    return HttpResponseRedirect('/leaves/employee_leaves')
