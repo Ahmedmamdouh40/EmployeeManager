@@ -26,4 +26,12 @@ class DepartmentForm(forms.ModelForm):
         fields = "__all__"
 
 
+class ContractForm(forms.ModelForm):
+    class Meta:
+        model = Contract
+        fields = "__all__"
+        widgets = {
+            "contract_start_date":DateInput(),
+            "contract_end_date":DateInput()
+        }
 

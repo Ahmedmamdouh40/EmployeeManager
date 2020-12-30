@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.shortcuts import get_object_or_404
 from .models import Employee,Department,Contract,Position
-from .forms import EmployeeForm ,PositionForm , DepartmentForm
+from .forms import EmployeeForm ,PositionForm , DepartmentForm , ContractForm
 from django.http import HttpResponseRedirect
 
 ######### Employee CRUD #########
@@ -100,4 +100,37 @@ def delete_department(request , department_id):
     department = Department.objects.get(id = department_id)
     department.delete()
     return HttpResponseRedirect('/employees/departments')
+
+
+######### Contract CRUD #########
+
+def contracts_list(request):
+    all_contracts = Contract.objects.all()
+    context = {'contracts' : all_contracts}
+    return render(request , 'contracts/contracts_list.html' , context)
+
+def create_contract(request):
+    form = ContractForm
+    if request.method == "POST":
+        form = ContractForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect('/employees/contracts')
+    return render(request , 'contracts/add_contract.html' , {'form':form})
+
+def edit_contract(request , contract_id):
+    contract = get_object_or_404(Contract , id=contract_id)
+    if request.method == "POST":
+        form = ContractForm(request.POST , instance=contract)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect('/employees/contracts')
+    else:
+        form = ContractForm(instance=contract)
+    return render(request , 'contracts/edit_contract.html' , {'form':form})
+
+def delete_contract(request , contract_id):
+    contract = Contract.objects.get(id = contract_id)
+    contract.delete()
+    return HttpResponseRedirect('/employees/contracts')
 

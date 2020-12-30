@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="card mb-4">
+    <div class="card-header"><i class="fas fa-table mr-1"></i>Contract</div>
+    <form action="./contracts/add_contract" class="inline">
+        <button class="float-right btn-primary btn-lg">Add Contract</button>
+    </form>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Employee Name</th>
+                        <th>Employee No.</th>
+                        <th>Hire Date</th>
+                        <th>Position</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for contract in contracts %}
+                    <tr>
+                        <td>{{contract.emp_name.full_name}}</td>
+                        <td>{{contract.emp_name.emp_number}}</td>
+                        <td>{{contract.emp_name.hire_date}}</td>
+                        <td>{{contract.position.name}}</td>
+                        <td>
+                            <form action="contracts/delete_contract/{{contract.id}}" class="inline">
+                                <button class="btn float-right btn-danger  ml-1">Delete</button>
+                            </form>
+                            <form action="contracts/edit_contract/{{contract.id}}" class="inline">
+                                <button class="btn float-left btn-primary">Update</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock content %}

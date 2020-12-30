@@ -34,5 +34,12 @@ urlpatterns = [
      path('departments',views.departments_list),
      path('departments/add_department',views.create_department),
      path('departments/edit_department/<department_id>' , views.edit_department),
-     path('departments/delete_department/<department_id>' , views.delete_department)
+     path('departments/delete_department/<department_id>' , views.delete_department),
+
+
+     path('contracts',views.contracts_list),
+     path('contracts/add_contract',views.create_contract),
+     path('contracts/edit_contract/<contract_id>',views.edit_contract),
+     path('contracts/delete_contract/<contract_id>',views.delete_contract)  
+
 ]
