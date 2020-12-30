@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.shortcuts import get_object_or_404
 from .models import Employee,Department,Contract,Position
-from .forms import EmployeeForm ,PositionForm
+from .forms import EmployeeForm ,PositionForm , DepartmentForm
 from django.http import HttpResponseRedirect
 
 ######### Employee CRUD #########
@@ -68,3 +68,36 @@ def delete_position(request , position_id):
     position = Position.objects.get(id = position_id)
     position.delete()
     return HttpResponseRedirect('/employees/positions')
+
+######### Department CRUD #########
+
+def departments_list(request):
+    all_departments = Department.objects.all()
+    context = {'departments' : all_departments}
+    return render(request , 'departments/departments_list.html' , context)
+
+def create_department(request):
+    form = DepartmentForm
+    if request.method == "POST":
+        form = DepartmentForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect('/employees/departments')
+    return render(request , 'departments/add_department.html' , {'form':form})
+
+def edit_department(request , department_id):
+    department = get_object_or_404(Department , id=department_id)
+    if request.method == "POST":
+        form = DepartmentForm(request.POST , instance=department)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect('/employees/departments')
+    else:
+        form = DepartmentForm(instance=department)
+    return render(request , 'departments/edit_department.html' , {'form':form})
+
+def delete_department(request , department_id):
+    department = Department.objects.get(id = department_id)
+    department.delete()
+    return HttpResponseRedirect('/employees/departments')
+

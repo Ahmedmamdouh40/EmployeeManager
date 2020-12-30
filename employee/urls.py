@@ -29,4 +29,10 @@ urlpatterns = [
      path('positions/add_position',views.create_position),
      path('positions/edit_position/<position_id>',views.edit_position),
      path('positions/delete_position/<position_id>',views.delete_position),
+
+
+     path('departments',views.departments_list),
+     path('departments/add_department',views.create_department),
+     path('departments/edit_department/<department_id>' , views.edit_department),
+     path('departments/delete_department/<department_id>' , views.delete_department)
 ]

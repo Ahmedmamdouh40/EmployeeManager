@@ -18,5 +18,12 @@ class PositionForm(forms.ModelForm):
     class Meta:
         model = Position
         fields = "__all__"
-        
+
+
+class DepartmentForm(forms.ModelForm):
+    class Meta:
+        model = Department
+        fields = "__all__"
+
+
 

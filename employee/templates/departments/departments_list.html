@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="card mb-4">
+    <div class="card-header"><i class="fas fa-table mr-1"></i>Departments</div>
+    <div class="card-body">
+        <form action="./departments/add_department" class="inline">
+            <button class="float-right btn-primary btn-lg">Add Department</button>
+        </form>
+        <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="80%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Department Desc</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for department in departments %}
+                    <tr>
+                        <td>{{department.name}}</td>
+                        {% if department.department_desc %}
+                            <td>{{department.department_desc}}</td>
+                        {% else %}
+                            <td>--</td>
+                        {% endif %}
+                        <td>
+                            <form action="departments/delete_department/{{department.id}}" class="inline">
+                                <button class=" btn float-right btn-danger  ml-1 mr-md-3">Delete</button>
+                            </form>
+                            <form action="departments/edit_department/{{department.id}}" class="inline">
+                                <button class="btn float-left btn-primary mr-1 ml-md-3">Update</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock content %}
