@@ -58,7 +58,7 @@ def create_employee_leave(request):
 def edit_employee_leave(request , employee_leave_id):
     employee_leave = get_object_or_404(EmployeeLeave , id=employee_leave_id)
     if request.method == "POST":
-        form = EmployeeLeave(request.POST , instance=employee_leave)
+        form = EmployeeLeaveForm(request.POST , instance=employee_leave)
         if form.is_valid():
             form.save()
             return HttpResponseRedirect('/leaves/employee_leaves')

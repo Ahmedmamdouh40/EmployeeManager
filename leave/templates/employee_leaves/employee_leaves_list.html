@@ -14,7 +14,9 @@
                         <th>Leave Start Date</th>
                         <th>Leave End Date</th>
                         <th>Leave Resume Date</th>
+                        <th>Number Of Days</th>
                         <th>Leave Type</th>
+                        <th>Status</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -25,7 +27,9 @@
                         <td>{{employee_leave.start_date}}</td>
                         <td>{{employee_leave.end_date}}</td>
                         <td>{{employee_leave.resume_date}}</td>
+                        <td>{{employee_leave.calculate_number_of_leave_days}} days</td>
                         <td>{{employee_leave.leave_type}}</td>
+                        <td>{{employee_leave.leave_status}}</td>
                         <td class="d-flex justify-content-around">
                             <form action="employee_leaves/edit_employee_leave/{{employee_leave.id}}" class="inline">
                                 <button class="btn float-left btn-primary ">Update</button>

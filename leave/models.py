@@ -15,6 +15,16 @@ class EmployeeLeave(models.Model):
     resume_date = models.DateField()
     leave_type = models.ForeignKey(LeaveMaster , on_delete=models.CASCADE)
 
+    LeaveStatusChoices = [
+        ('WAITING' , 'Waiting'),
+        ('APPROAVED' , 'Approaved'),
+        ('REJECTED' , 'Rejected')
+    ]
+    leave_status = models.CharField(choices=LeaveStatusChoices , max_length=25 , default='WAITING')
 
+    def calculate_number_of_leave_days(self):
+        days = self.end_date - self.start_date
+        return (days.days)
+    
     def __str__(self):
         return self.emp_name.full_name
