@@ -6,6 +6,8 @@ from .forms import LeaveMasterForm ,EmployeeLeaveForm
 from django.http import HttpResponseRedirect
 from django.contrib import messages
 from datetime import datetime
+from django.conf import settings
+from django.core.mail import send_mail
 
 ######### LeaveMaster CRUD #########
 
@@ -60,6 +62,19 @@ def create_employee_leave(request):
         if form.is_valid():
             if EmployeeLeave.is_in_a_leave(emp_id) == False:
                 if EmployeeLeave.is_leave_balance_valid(emp_id,leave_value,start_date,end_date)== True:
+                    ## mail ##
+                    emp = Employee.objects.get(id = emp_id)
+                    leave_type_obj = LeaveMaster.objects.get(id = leave_type)
+                    subject = 'welcome to Mashreq Arabia HR'
+                    message = f'''Hi sir,Please review mr {emp.full_name} leave request.
+Leave Start Date: {start_date}.
+Leave End Date: {end_date}.
+Leave Type: {leave_type_obj.name}.
+Employee Available Balance:{emp.leave_balance}'''
+                    email_from = settings.EMAIL_HOST_USER 
+                    recipient_list = ["ahmedmamdouh2727@gmail.com"] 
+                    send_mail( subject, message, email_from, recipient_list )
+                    ## end mail ##
                     form.save()
                     return HttpResponseRedirect('/leaves/employee_leaves')
                 else:

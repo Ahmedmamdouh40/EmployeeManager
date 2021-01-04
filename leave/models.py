@@ -56,3 +56,5 @@ class EmployeeLeave(models.Model):
             return True
         else:
             return False
+
+    

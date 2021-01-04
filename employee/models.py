@@ -30,6 +30,7 @@ class Employee (models.Model):
         ('SINGLE' , 'Single'),
         ('MARRIED' , 'Married')
     ]
+    manager = models.ForeignKey('self' ,on_delete=models.CASCADE ,blank=True, null=True)
     social_status = models.CharField(choices=SocialStatusChoices , max_length=10)
     is_insured = models.BooleanField()
     is_active = models.BooleanField()
