@@ -1,8 +1,11 @@
 from django.shortcuts import render
 from django.shortcuts import get_object_or_404
 from .models import LeaveMaster, EmployeeLeave
+from employee.models import Employee
 from .forms import LeaveMasterForm ,EmployeeLeaveForm
 from django.http import HttpResponseRedirect
+from django.contrib import messages
+from datetime import datetime
 
 ######### LeaveMaster CRUD #########
 
@@ -49,9 +52,20 @@ def create_employee_leave(request):
     form = EmployeeLeaveForm
     if request.method == "POST":
         form = EmployeeLeaveForm(request.POST)
+        emp_id = form.data['emp_name']
+        leave_type = form.data['leave_type']
+        start_date = datetime.strptime(form.data['start_date'], '%Y-%m-%d')
+        end_date = datetime.strptime(form.data['end_date'], '%Y-%m-%d')
+        leave_value = EmployeeLeave.detect_leave_value_due_to_type(leave_type)
         if form.is_valid():
-            form.save()
-            return HttpResponseRedirect('/leaves/employee_leaves')
+            if EmployeeLeave.is_in_a_leave(emp_id) == False:
+                if EmployeeLeave.is_leave_balance_valid(emp_id,leave_value,start_date,end_date)== True:
+                    form.save()
+                    return HttpResponseRedirect('/leaves/employee_leaves')
+                else:
+                    messages.error(request , 'You do not have enough balance for this leave')
+            else:
+                messages.error(request, 'You can not ask for a new leave while you are in another leave')
     return render(request , 'employee_leaves/add_employee_leave.html' , {'form':form})
 
 
@@ -70,3 +84,5 @@ def delete_employee_leave(request , employee_leave_id):
     employee_leave = EmployeeLeave.objects.get(id = employee_leave_id)
     employee_leave.delete()
     return HttpResponseRedirect('/leaves/employee_leaves')
+
+
