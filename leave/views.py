@@ -8,14 +8,17 @@ from django.contrib import messages
 from datetime import datetime
 from django.conf import settings
 from django.core.mail import send_mail
+from django.contrib.auth.decorators import login_required
 
 ######### LeaveMaster CRUD #########
 
+@login_required
 def leave_masters_list(request):
     all_leave_masters = LeaveMaster.objects.all()
     context = {'leave_masters' : all_leave_masters}
     return render(request , 'leave_master/leave_masters_list.html' , context)
 
+@login_required
 def create_leave_master(request):
     form = LeaveMasterForm
     if request.method == "POST":
@@ -25,6 +28,7 @@ def create_leave_master(request):
             return HttpResponseRedirect('/leaves')
     return render(request , 'leave_master/add_leave_master.html' , {'form':form})
 
+@login_required
 def edit_leave_master(request , leave_master_id):
     leave_master = get_object_or_404(LeaveMaster , id=leave_master_id)
     if request.method == "POST":
@@ -36,6 +40,7 @@ def edit_leave_master(request , leave_master_id):
         form = LeaveMasterForm(instance=leave_master)
     return render(request , 'leave_master/edit_leave_master.html' , {'form':form}) 
 
+@login_required
 def delete_leave_master(request , leave_master_id):
     leave_master = LeaveMaster.objects.get(id = leave_master_id)
     leave_master.delete()
@@ -44,12 +49,13 @@ def delete_leave_master(request , leave_master_id):
 
 ######### EmployeeLeave CRUD #########
 
+@login_required
 def employee_leaves_list(request):
     all_employee_leaves = EmployeeLeave.objects.all()
     context = {'employee_leaves' : all_employee_leaves}
     return render(request , 'employee_leaves/employee_leaves_list.html' , context)
 
-
+@login_required
 def create_employee_leave(request):
     form = EmployeeLeaveForm
     if request.method == "POST":
@@ -84,6 +90,7 @@ Employee Available Balance:{emp.leave_balance}'''
     return render(request , 'employee_leaves/add_employee_leave.html' , {'form':form})
 
 
+@login_required
 def edit_employee_leave(request , employee_leave_id):
     employee_leave = get_object_or_404(EmployeeLeave , id=employee_leave_id)
     if request.method == "POST":
@@ -95,6 +102,7 @@ def edit_employee_leave(request , employee_leave_id):
         form = EmployeeLeaveForm(instance=employee_leave )
     return render(request , 'employee_leaves/edit_employee_leave.html' , {'form':form})
 
+@login_required
 def delete_employee_leave(request , employee_leave_id):
     employee_leave = EmployeeLeave.objects.get(id = employee_leave_id)
     employee_leave.delete()
@@ -103,7 +111,7 @@ def delete_employee_leave(request , employee_leave_id):
 
 ##### Actions on Leaves ######
 
-
+@login_required
 def change_emp_leave_balance(emp_id , leave_type , start_date , end_date):
     emp = Employee.objects.filter(id = emp_id)
     leave_value = EmployeeLeave.detect_leave_value_due_to_type(leave_type)
@@ -113,7 +121,7 @@ def change_emp_leave_balance(emp_id , leave_type , start_date , end_date):
     emp.update(leave_balance = leave_balance)
     return emp[0].leave_balance
 
-
+@login_required
 def accept_leave(request , employee_leave_id):
     leave = EmployeeLeave.objects.filter(id = employee_leave_id)
     new_balance = change_emp_leave_balance(leave[0].emp_name.id , leave[0].leave_type.id , leave[0].start_date , leave[0].end_date)
@@ -128,6 +136,7 @@ def accept_leave(request , employee_leave_id):
     ## end mail ##
     return HttpResponseRedirect('/leaves/employee_leaves')
 
+@login_required
 def reject_leave(request , employee_leave_id):
     leave = EmployeeLeave.objects.filter(id = employee_leave_id)
     leave.update(leave_status = "REJECTED")

@@ -1,14 +1,34 @@
 from django import forms
 from .models import Employee,Contract,Department,Position
+from django.contrib.auth.forms import UserCreationForm , UserChangeForm
+from django.contrib.auth.models import User
 
 class DateInput(forms.DateInput):
     input_type = 'date'
 
 
-class EmployeeForm(forms.ModelForm):
+class EmployeeForm(UserCreationForm):
     class Meta:
         model = Employee
-        fields = "__all__"
+        fields = UserCreationForm.Meta.fields+(
+            'full_name',
+            'email',
+            'emp_number',
+            'gender',
+            'date_of_birth',
+            'nationality',
+            'place_of_birth',
+            'address',
+            'mobile_number',
+            'id_type',
+            'id_number',
+            'hire_date',
+            'leave_balance',
+            'manager',
+            'social_status',
+            'is_insured',
+            'has_medical'
+        )
         widgets = {
             "date_of_birth":DateInput(),
             "hire_date":DateInput(),

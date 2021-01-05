@@ -1,29 +1,29 @@
 from django.db import models
 from datetime import datetime    
+from django.contrib.auth.models import AbstractUser
 
-
-class Employee (models.Model):
-    full_name = models.CharField(max_length=150)
-    emp_number = models.IntegerField()
+class Employee (AbstractUser):
+    full_name = models.CharField(max_length=150 ,default=None)
+    emp_number = models.IntegerField(default=None)
     
     GenderChoices=[
         ('M' , 'Male'),
         ('F' , 'Female')
     ]
-    gender = models.CharField(choices=GenderChoices , max_length=1)
-    date_of_birth = models.DateField()
-    nationality = models.CharField(max_length=50)
-    place_of_birth = models.CharField(max_length=150)
-    address = models.CharField(max_length=150)
-    mobile_number = models.CharField(max_length=150)
+    gender = models.CharField(choices=GenderChoices , max_length=1,default=None)
+    date_of_birth = models.DateField(default=None)
+    nationality = models.CharField(max_length=50,default=None)
+    place_of_birth = models.CharField(max_length=150,default=None)
+    address = models.CharField(max_length=150,default=None)
+    mobile_number = models.CharField(max_length=150,default=None)
     
     IdTypeChoices=[
         ('NATIONAL' , 'National'),
         ('PASSPORT' , 'Passport')
     ]
-    id_type = models.CharField(choices=IdTypeChoices , max_length=10)
-    id_number = models.CharField(max_length=14)
-    hire_date = models.DateField()
+    id_type = models.CharField(choices=IdTypeChoices , max_length=10,default=None)
+    id_number = models.CharField(max_length=14,default=None)
+    hire_date = models.DateField(default=None)
     leave_balance = models.IntegerField(default=21)
     
     SocialStatusChoices=[
@@ -31,13 +31,13 @@ class Employee (models.Model):
         ('MARRIED' , 'Married')
     ]
     manager = models.ForeignKey('self' ,on_delete=models.CASCADE ,blank=True, null=True)
-    social_status = models.CharField(choices=SocialStatusChoices , max_length=10)
-    is_insured = models.BooleanField()
-    is_active = models.BooleanField()
-    has_medical = models.BooleanField()
+    social_status = models.CharField(choices=SocialStatusChoices,default=None , max_length=10)
+    is_insured = models.BooleanField(default=0)
+    is_active = models.BooleanField(default=1)
+    has_medical = models.BooleanField(default=0)
 
     def __str__(self):
-        return self.full_name
+        return self.username
 
 
 class Department(models.Model):
