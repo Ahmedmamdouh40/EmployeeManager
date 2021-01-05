@@ -3,7 +3,7 @@ from django.shortcuts import get_object_or_404
 from .models import LeaveMaster, EmployeeLeave
 from employee.models import Employee
 from .forms import LeaveMasterForm ,EmployeeLeaveForm
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect,HttpResponse
 from django.contrib import messages
 from datetime import datetime
 from django.conf import settings
@@ -101,3 +101,42 @@ def delete_employee_leave(request , employee_leave_id):
     return HttpResponseRedirect('/leaves/employee_leaves')
 
 
+##### Actions on Leaves ######
+
+
+def change_emp_leave_balance(emp_id , leave_type , start_date , end_date):
+    emp = Employee.objects.filter(id = emp_id)
+    leave_value = EmployeeLeave.detect_leave_value_due_to_type(leave_type)
+    requested_leave_period =  end_date - start_date
+    requested_leave_value = requested_leave_period.days * leave_value
+    leave_balance = emp[0].leave_balance - requested_leave_value
+    emp.update(leave_balance = leave_balance)
+    return emp[0].leave_balance
+
+
+def accept_leave(request , employee_leave_id):
+    leave = EmployeeLeave.objects.filter(id = employee_leave_id)
+    new_balance = change_emp_leave_balance(leave[0].emp_name.id , leave[0].leave_type.id , leave[0].start_date , leave[0].end_date)
+    leave.update(leave_status = "APPROAVED")
+    ## mail ##
+    emp = Employee.objects.get(id = leave[0].emp_name.id)
+    subject = 'Your Leave Request'
+    message = f'''Hi {emp.full_name}, We want to inform you that your leave request has been approaved.'''
+    email_from = settings.EMAIL_HOST_USER 
+    recipient_list = ["ahmedmamdouh2727@gmail.com"] 
+    send_mail( subject, message, email_from, recipient_list )
+    ## end mail ##
+    return HttpResponseRedirect('/leaves/employee_leaves')
+
+def reject_leave(request , employee_leave_id):
+    leave = EmployeeLeave.objects.filter(id = employee_leave_id)
+    leave.update(leave_status = "REJECTED")
+    ## mail ##
+    emp = Employee.objects.get(id = leave[0].emp_name.id)
+    subject = 'Your Leave Request'
+    message = f'''Hi {emp.full_name}, We want to inform you that your leave request has been rejected.'''
+    email_from = settings.EMAIL_HOST_USER 
+    recipient_list = ["ahmedmamdouh2727@gmail.com"] 
+    send_mail( subject, message, email_from, recipient_list )
+    ## end mail ##
+    return HttpResponseRedirect('/leaves/employee_leaves')

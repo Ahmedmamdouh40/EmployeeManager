@@ -28,7 +28,9 @@ urlpatterns = [
      path('employee_leaves/add_employee_leave', views.create_employee_leave),
      path('employee_leaves/edit_employee_leave/<employee_leave_id>' , views.edit_employee_leave),
      path('employee_leaves/delete_employee_leave/<employee_leave_id>',views.delete_employee_leave),
-
+     path('employee_leaves/accept_employee_leave/<employee_leave_id>',views.accept_leave),
+     path('employee_leaves/reject_employee_leave/<employee_leave_id>',views.reject_leave),
+     
 
 
 ]

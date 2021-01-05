@@ -51,7 +51,6 @@ class EmployeeLeave(models.Model):
         emp_leaves_balance = emp.leave_balance
         requested_leave_period =  end_date - start_date
         requested_leave_value = requested_leave_period.days * leave_value
-        print(end_date)
         if emp_leaves_balance >= requested_leave_value:
             return True
         else:

@@ -31,10 +31,10 @@
                         <td>{{employee_leave.leave_type}}</td>
                         <td>{{employee_leave.leave_status}}</td>
                         <td class="d-flex justify-content-around">
-                            <form action="employee_leaves/edit_employee_leave/{{employee_leave.id}}" class="inline">
+                            <form action="employee_leaves/accept_employee_leave/{{employee_leave.id}}" class="inline">
                                 <button class="btn float-left btn-primary ">Accept</button>
                             </form>
-                            <form action="employee_leaves/delete_employee_leave/{{employee_leave.id}}" class="inline">
+                            <form action="employee_leaves/reject_employee_leave/{{employee_leave.id}}" class="inline">
                                 <button class=" btn float-right btn-danger ">Reject</button>
                             </form>
                         </td>
